@@ -7,7 +7,12 @@ public class No {
 	private No pai;
 	private No prox;
 	private int valor;
-
+	private int cont = 0;
+	
+	public No(){
+		
+	}
+	
 	public No(int valor) {
 		this.valor = valor;
 	}
@@ -76,50 +81,38 @@ public class No {
 	public void remover(No dado) {
 
 	}
-
+	/*
 	public void inserir(No novoDado) {
 		if (filho_esq == null) {
 			filho_esq = novoDado;
+			
 		} else if (filho_dir == null) {
 			filho_dir = novoDado;
 		} else {
 			filho_esq.inserir(novoDado);
 		}
+	*/
 
-	}
-	//ESSE ADICINAR SO ESTA FALTANDO A PARTE DE TROCAR
-	//QUE VAI FICAR NO ELSE
-	public void inserirR(No novoNo) {
-		if (novoNo.getValor() < valor) {
-			if (filho_esq == null) {
-				filho_esq = novoNo;
-			} else if (filho_dir == null) {
-				filho_dir = novoNo;
-			} else {
-				filho_esq.inserir(novoNo);
-			}
-		} else {
-			// Aqui vai ser realizada a troca entre o pai e seu respectivo filho
-		}
-	}
+	
+	// ESSE ADICINAR SO ESTA FALTANDO A PARTE DE TROCAR
+	// QUE VAI FICAR NO ELSE
+	
 
 	public void imprimir() {
-
-		// essa função tem que ajeitar alguma coisa
-		// 
-		// System.out.println(valor);
 
 		if (filho_esq != null) {
 			// filho_esq.imprimir();
 			System.out.println(filho_esq.getValor());
 
 		}
+
 		if (filho_dir != null) {
 			// filho_dir.imprimir();
 			System.out.println(filho_dir.getValor());
 
 		}
-		filho_dir.imprimir();
+
+		filho_esq.imprimir();
 
 	}
 
