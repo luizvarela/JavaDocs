@@ -25,7 +25,7 @@ public class Heap {
 		} else {
 			No pai = raiz;
 			No aux;
-
+//test test
 			while (true) {
 				if (novoNo.getValor() < pai.getValor()) {
 					if (pai.getFilho_esq() == null) {
