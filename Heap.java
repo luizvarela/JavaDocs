@@ -1,119 +1,150 @@
-package Heap;
-
 public class Heap {
+	private int[] data;
+	private int heapSize;
+	private int parentIndex;
 
-	private No raiz;
-
-	public Heap() {
-
+	public Heap(int size) {
+		data = new int[size];
+		heapSize = 0;
 	}
 
-	/*
-	 * public void inserir(int valor) { No novoDado = new No(valor); if (raiz ==
-	 * null) { raiz = novoDado; } else if (raiz.getFilho_esq() == null) {
-	 * raiz.setFilho_esq(novoDado); } else filho_esq.inserirR(novoNo);filho_esq.inserirR(novoNo);filho_esq.inserirR(novoNo);filho_esq.inserirR(novoNo);filho_esq.inserirR(novoNo);filho_esq.inserirR(novoNo);filho_esq.inserirR(novoNo);filho_esq.inserirR(novoNo);filho_esq.inserirR(novoNo);filho_esq.inserirR(novoNo);filho_esq.inserirR(novoNo);filho_esq.inserirR(novoNo);if (raiz.getFilho_dir() == null) {
-	 * raiz.setFilho_dir(novoDado); } else { raiz.inserir(novoDado); }
-	 * 
-	 * }
-	 */
+	public boolean isEmpty() {
+		return (heapSize == 0);
+	}
 
-	public void inserirR(int dado) {
-		No novoNo = new No(dado);
-		// No novoNo = new No(dado);
-		if (raiz == null) {
-			raiz = novoNo;
-		} else {
-			No pai = raiz;
-			No aux;
-//test test
-			while (true) {
-				if (novoNo.getValor() < pai.getValor()) {
-					if (pai.getFilho_esq() == null) {
-						pai.setFilho_esq(novoNo);
-						break;
-					} else if (pai.getFilho_dir() == null) {
-						pai.setFilho_dir(novoNo);
-						break;
-					} else {
-						//O PROBLEMA esta aqui, como vai passar para o proximo No esquerda
-						//inserirR(novoNo);
-						pai.setFilho_esq(novoNo);
-						break;
-					}
-					
-				} else {
-					if (pai.getFilho_esq() == null) {
-						aux = novoNo.getFilho_esq();
-						novoNo.setFilho_esq(pai);
-						pai = aux;
-						break;
-					} else if (pai.getFilho_dir() == null) {
-						aux = novoNo.getFilho_dir();
-						novoNo.setFilho_dir(pai);
-						pai = aux;
-						break;
-					} else {
-						
-						pai.setFilho_esq(novoNo);
-						continue;
-					}
-				}
+	public int getMinimo() {
+		if (isEmpty())
+			return 0;
+		else
+			return data[0];
+	}
+
+	public void insert(int dado) {
+		if (heapSize == data.length)
+			System.out.println("O Heap está cheio!!");
+		else {
+			heapSize++;
+			data[heapSize - 1] = dado;
+			trocar(heapSize - 1);
+		}
+	}
+
+	private void trocar(int index) {
+
+		int aux;
+		if (index != 0) {
+			parentIndex = getPaiIndex(index);
+			if (data[index] > data[parentIndex]) {
+				aux = data[parentIndex];
+				data[parentIndex] = data[index];
+				data[index] = aux;
+				trocar(parentIndex);
 			}
 		}
-
 	}
 
-	/*
-	 * } public void inserirR(int dado) { No novoNo = new No(dado); if (raiz ==
-	 * null) { raiz = novoNo; }else{ raiz.inserirR(novoNo); } }
-	 */
-	public void imprimirR() {
-		if (raiz != null) {
-			// System.out.println(raiz.getValor());
-			raiz.imprimir();
-		}
+	public void remover() {
+		
 
+		if (isEmpty())
+			System.out.println("Vazio");
+		else {
+			data[0] = data[heapSize - 1];
+			//temp[0] = data[heapSize - 1];
+			heapSize--;
+			
+			
+			int[] temp = new int[heapSize];
+			int cont = 0;
+			int aux;
+			
+			for (int i = 0; i < temp.length; i++) {
+				cont++;
+				temp[cont - 1] = data[i];
+				parentIndex = getPaiIndex(i);
+
+				if (temp[i] > temp[parentIndex]) {
+					aux = temp[parentIndex];
+					temp[parentIndex] = temp[i];
+					temp[i] = aux;
+					trocar(0);
+				}
+			}
+			
+			System.out.println("");
+			for (int x = 0; x < temp.length; x++) {
+				System.out.print(temp[x] + " ");
+			}
+		}
+	}
+
+	public void remove() {
+
+		if (isEmpty())
+			System.out.println("Vazio");
+		else {
+			data[0] = data[heapSize - 1];
+			heapSize--;
+			if (heapSize > 0)
+				troca(0);
+		}
+	}
+	
+	private void troca(int nodeIndex) {
+        int leftChildIndex, rightChildIndex, minIndex, tmp;
+        leftChildIndex = getLeftChildIndex(nodeIndex);
+        rightChildIndex = getRightChildIndex(nodeIndex);
+        if (rightChildIndex >= heapSize) {
+              if (leftChildIndex >= heapSize)
+                    return;
+              else
+                    minIndex = leftChildIndex;
+        } else {
+              if (data[leftChildIndex] <= data[rightChildIndex])
+                    minIndex = leftChildIndex;
+              else
+                    minIndex = rightChildIndex;
+        }
+        if (data[nodeIndex] > data[minIndex]) {
+              tmp = data[minIndex];
+              data[minIndex] = data[nodeIndex];
+              data[nodeIndex] = tmp;
+              troca(minIndex);
+        }
+  }
+
+	private int getLeftChildIndex(int index) {
+		return 2 * index + 1;
+	}
+
+	private int getRightChildIndex(int index) {
+		return 2 * index + 2;
+	}
+
+	private int getPaiIndex(int index) {
+		return (index - 1) / 2;
 	}
 
 	public void imprimir() {
-
-		if (raiz != null) {
-			System.out.println(raiz.getValor());
+		for (int i = 0; i < data.length; i++) {
+			System.out.print(data[i] + " ");
 		}
-		if (raiz.getFilho_esq() != null) {
-			System.out.println(raiz.getFilho_esq().getValor());
+	}
+
+	public String toString() {
+		final StringBuffer sb = new StringBuffer();
+
+		sb.append("[ ");
+
+		for (int i = 1; i < data.length; i++) {
+			if (i != 1) {
+				sb.append(", ");
+			}
+			sb.append(data[i]);
 		}
 
-		if (raiz.getFilho_dir() != null) {
-			System.out.println(raiz.getFilho_dir().getValor());
-		}
+		sb.append(" ]");
 
-		raiz.getFilho_esq().imprimir();
-
+		return sb.toString();
 	}
-
-	/*
-	 * public void heapfy(Lista a, int valor) { // }
-	 * 
-	 * public void trocar(Lista a, int valor) { if (raiz == null) {
-	 * System.out.println("Árvore vazia"); } else { // } }
-	 */
-
-	public No getRaiz() {
-		return raiz;
-	}
-
-	public void setRaiz(No raiz) {
-		this.raiz = raiz;
-	}
-
-	public void remover(int valor) {
-		//
-	}
-
-	public int buscar(int valor) {
-		//
-		return valor;
-	}
-
 }
